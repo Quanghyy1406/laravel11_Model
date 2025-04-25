@@ -1,0 +1,231 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a3d;
+    color: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000;
+    padding: 10px 20px;
+    color: #fff;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu a:hover {
+    color: #ffcc00;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-yellow {
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-yellow:hover {
+    background-color: #e6b800;
+}
+
+.btn-purple {
+    background-color: #6a0dad;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-purple:hover {
+    background-color: #5a009d;
+}
+
+.search-bar {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-icon {
+    color: #ccc;
+    margin-left: -40px;
+    cursor: pointer;
+}
+
+.login {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login:hover {
+    color: #ffcc00;
+}
+
+.language {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.language span {
+    font-size: 14px;
+}
+
+.language i {
+    font-size: 12px;
+}
+
+.container {
+    width: 90%;
+    margin: 20px auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.movie-grid {
+    display: flex;
+    overflow: hidden;
+    gap: 20px;
+    flex: 1;
+    position: relative;
+}
+
+/* Căn chỉnh nút và tiêu đề phim */
+.movie-card {
+    background: #2c2c54;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex: 0 0 calc(25% - 20px);
+    /* Đảm bảo 4 phim hiển thị đều nhau */
+    margin: 0 2px;
+    /* Khoảng cách giữa các phim */
+    position: relative;
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #ffcc00;
+    /* Đường viền dưới ảnh */
+}
+
+.movie-title {
+    font-size: 1.2em;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.movie-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.movie-actions button {
+    background: #ffcc00;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+}
+
+.movie-actions button:hover {
+    background: #e6b800;
+}
+
+.pagination {
+    position: relative;
+    height: 0;
+    /* Không chiếm không gian layout */
+    display: flex; /* Để căn chỉnh các nút mũi tên */
+    align-items: center; /* Căn chỉnh theo chiều dọc */
+    justify-content: center; /* Căn chỉnh các nút ở giữa */
+    gap: 10px; /* Khoảng cách giữa các nút phân trang */
+    margin-top: 20px; /* Thêm khoảng cách phía trên thanh phân trang */
+}
+
+/* Nút mũi tên */
+.arrow-btn-prev,
+.arrow-btn-next {
+    font-size: 20px; /* Giảm kích thước font chữ của mũi tên */
+    width: 30px;    /* Giảm chiều rộng của nút */
+    height: 30px;   /* Giảm chiều cao của nút */
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none; /* Loại bỏ border mặc định của button */
+    padding: 0; /* Loại bỏ padding mặc định */
+}
+
+.arrow-btn-prev:hover,
+.arrow-btn-next:hover {
+    color: #ffcc00;
+}
+
+.arrow-btn-prev.disabled,
+.arrow-btn-next.disabled {
+    color: #666;
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Các nút số trang */
+.page-number-btn {
+    background-color: #2c2c54;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none; /* Loại bỏ gạch chân nếu là thẻ a */
+}
+
+.page-number-btn:hover,
+.page-number-btn.active {
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+}
