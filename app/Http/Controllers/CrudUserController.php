@@ -8,21 +8,31 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * CRUD User controller
+ */
 class CrudUserController extends Controller
 {
+
+    /**
+     * Login page
+     */
     public function login()
     {
         return view('crud_user.login');
     }
 
+    /**
+     * User submit form login
+     */
     public function authUser(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             return redirect()->intended('list')
@@ -32,11 +42,17 @@ class CrudUserController extends Controller
         return redirect("login")->withSuccess('Login details are not valid');
     }
 
+    /**
+     * Registration page
+     */
     public function createUser()
     {
         return view('crud_user.create');
     }
 
+    /**
+     * User submit form register
+     */
     public function postUser(Request $request)
     {
         $request->validate([
@@ -48,8 +64,6 @@ class CrudUserController extends Controller
         $data = $request->all();
         $check = User::create([
             'name' => $data['name'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
             'email' => $data['email'],
             'password' => Hash::make($data['password'])
         ]);
@@ -57,22 +71,29 @@ class CrudUserController extends Controller
         return redirect("login");
     }
 
-    public function readUser(Request $request)
-    {
+    /**
+     * View user detail page
+     */
+    public function readUser(Request $request) {
         $user_id = $request->get('id');
         $user = User::find($user_id);
 
         return view('crud_user.read', ['messi' => $user]);
     }
 
-    public function deleteUser(Request $request)
-    {
+    /**
+     * Delete user by id
+     */
+    public function deleteUser(Request $request) {
         $user_id = $request->get('id');
-        User::destroy($user_id);
+        $user = User::destroy($user_id);
 
-        return redirect("list")->withSuccess('User deleted successfully.');
+        return redirect("list")->withSuccess('You have signed-in');
     }
 
+    /**
+     * Form update user page
+     */
     public function updateUser(Request $request)
     {
         $user_id = $request->get('id');
@@ -81,62 +102,67 @@ class CrudUserController extends Controller
         return view('crud_user.update', ['user' => $user]);
     }
 
+    /**
+     * Submit form update user
+     */
     public function postUpdateUser(Request $request)
     {
         $input = $request->all();
 
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $input['id'],
+            'email' => 'required|email|unique:users,id,'.$input['id'],
             'password' => 'required|min:6',
         ]);
 
-        $user = User::find($input['id']);
-        $user->name = $input['name'];
-        $user->phone = $input['phone'];
-        $user->address = $input['address'];
-        $user->email = $input['email'];
-        $user->password = $input['password'];
-        $user->save();
+       $user = User::find($input['id']);
+       $user->name = $input['name'];
+       $user->email = $input['email'];
+       $user->password = $input['password'];
+       $user->save();
 
-        return redirect("list")->withSuccess('User updated successfully.');
+        return redirect("list")->withSuccess('You have signed-in');
     }
 
+    /**
+     * List of users
+     */
     public function listUser(Request $request)
     {
-        if (Auth::check()) {
-            $keyword = $request->input('keyword');
+        $query = User::query();
 
-            $users = User::query();
-
-            if ($keyword) {
-                $users->where('name', 'like', "%{$keyword}%")
-                      ->orWhere('email', 'like', "%{$keyword}%");
-            }
-
-            $users = $users->paginate(10);
-
-            return view('crud_user.list', ['users' => $users, 'keyword' => $keyword]);
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
         }
 
-        return redirect("login")->withSuccess('You are not allowed to access');
-    }
-
-    public function showUser($id)
-    {
-        if (Auth::check()) {
-            $user = User::findOrFail($id);
-            return view('crud_user.show', ['user' => $user]);
+        if ($request->has('role') && $request->get('role') != '') {
+            $query->where('role', $request->get('role'));
         }
 
-        return redirect("login")->withSuccess('You are not allowed to access');
+        $users = $query->paginate(10);
+
+        return view('crud_user.list', compact('users'));
     }
 
-    public function signOut()
-    {
+    /**
+     * Sign out
+     */
+    public function signOut() {
         Session::flush();
         Auth::logout();
 
-        return redirect('login');
+        return Redirect('login');
+    }
+
+    /**
+     * Dashboard page
+     */
+    public function dashboard()
+    {
+        return view('dashboard');
     }
 }

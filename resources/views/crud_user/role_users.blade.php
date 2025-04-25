@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('dashboard')
 
 @section('content')
 <div class="container">
@@ -6,29 +6,17 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4>User List</h4>
-                        <form action="{{ route('crud_user.list') }}" method="GET" class="d-flex">
-                            <select name="search_type" class="form-select me-2" style="width: 150px;">
-                                <option value="id" {{ request('search_type') == 'id' ? 'selected' : '' }}>Search by ID</option>
-                                <option value="name" {{ request('search_type') == 'name' ? 'selected' : '' }}>Search by Name</option>
-                                <option value="order" {{ request('search_type') == 'order' ? 'selected' : '' }}>Search by Order</option>
-                            </select>
-                            <input type="text" name="search" class="form-control me-2" placeholder="Enter search term" value="{{ request('search') }}">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                    </div>
+                    <h3 class="card-title">Users with Role: {{ ucfirst($role) }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>numerical order</th>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Role</th>
-                                    <th>Orders</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -42,9 +30,6 @@
                                         <span class="badge bg-{{ $user->role == 'admin' ? 'danger' : ($user->role == 'manager' ? 'warning' : ($user->role == 'editor' ? 'info' : 'success')) }}">
                                             {{ ucfirst($user->role) }}
                                         </span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('orders.index', ['user_id' => $user->id]) }}" class="btn btn-info btn-sm">View Orders</a>
                                     </td>
                                     <td>
                                         <a href="{{ route('user.readUser', ['id' => $user->id]) }}" class="btn btn-info btn-sm">View</a>
@@ -62,4 +47,4 @@
         </div>
     </div>
 </div>
-@endsection
+@endsection 
